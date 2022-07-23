@@ -9,11 +9,28 @@ const get_search_value = () => {
 };
 
 const search = async () => {
-  reset_card();
-  const val = get_search_value();
-  const data =  await call_api(val);
-  show_results(data);
+  reset_search();
+  const search_request = get_search_value();
+  const data = await call_api(search_request);
+  if (data) {
+    show_results(data);
+  }
+  if (!data) {
+    invalid_call();
+  }
 };
+
+const check_if_card = () => {
+  const card = document.getElementById("card");
+  if (card) {
+    card.remove();
+  }
+}
+
+const reset_search = () => {
+  main.style.display = "none";
+  check_if_card();
+}
 
 const check_enter = (event) => {
   if (event.keyCode === 13) {
@@ -27,11 +44,11 @@ const call_api = async (search_val) => {
     const result = await response.json();
     return result;
   }
-  invalid_call();
+  return false;
 }
 
 const response_is_valid = (status) => {
-  switch(status) {
+  switch (status) {
     case 404:
       return false;
     default:
@@ -42,7 +59,6 @@ const response_is_valid = (status) => {
 const invalid_call = () => {
   alert("invalid input");
   search_bar.value = "";
-  return;
 }
 
 const show_results = (pokemon_data) => {
@@ -77,11 +93,6 @@ const create_sprite = (sprite_url) => {
   return img;
 }
 
-const reset_card = () => {
-  let card = document.getElementById("card");
-  // remove it
-}
-
-const show_info = () => {
+const create_info = () => {
   //
 };
