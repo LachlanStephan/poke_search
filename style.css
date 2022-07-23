@@ -53,3 +53,20 @@ button {
   border: 1px solid black;
   border-radius: 5px;
 }
+
+#card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 70%;
+}
+
+.card_header,
+.sprite_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
