@@ -1,0 +1,55 @@
+html {
+  background-image: url("./assets/background.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+body {
+  height: auto;
+  width: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+main {
+  justify-content: center;
+  align-items: center;
+  background: lightgray;
+  opacity: 70%;
+  margin: 1rem;
+  display: none;
+  width: 70%;
+  padding: 1rem; 
+  border-radius: 5px;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: .1rem;
+}
+
+h1 {
+  color: black;
+}
+
+h2 {
+  text-transform: capitalize;
+}
+
+input {
+  width: 70%;
+  height: 1rem;
+  padding: 1rem;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+button {
+  cursor: pointer;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+}
