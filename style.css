@@ -20,7 +20,7 @@ main {
   margin: 1rem;
   display: none;
   width: 70%;
-  padding: 1rem; 
+  padding: 1rem;
   border-radius: 5px;
 }
 
@@ -28,7 +28,7 @@ header {
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: .1rem;
+  gap: 0.1rem;
 }
 
 h1 {
@@ -36,7 +36,7 @@ h1 {
 }
 
 h2 {
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 input {
@@ -69,4 +69,33 @@ button {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.move_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 15rem;
+  overflow: auto;
+}
+
+.stats_container {
+  width: 100%;
+  display: grid;
+  justify-content: space-between;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: auto;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.stat {
+  text-align: right;
+}
+
+#types,
+.move_container > p,
+.stats_container > span {
+  text-transform: uppercase;
+  font-weight: bold;
 }
