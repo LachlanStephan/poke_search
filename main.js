@@ -1,15 +1,64 @@
 // global constants
 const search_bar = document.getElementById("search_bar");
-const api_url = "https://pokeapi.co/api/v2/pokemon/";
+const pokemon_url = "https://pokeapi.co/api/v2/pokemon/";
+const generations_url = "https://pokeapi.co/api/v2/generation/";
+const types_url = "https://pokeapi.co/api/v2/type/";
+let url = "";
 const main = document.getElementsByTagName("main")[0];
+const filter = document.getElementById("filter");
+
+// filters
+const filters = {
+  pokemon: "pokemon",
+  generations: "generations",
+  types: "types",
+};
+let curr_filter = filters.pokemon;
 
 // functions
+const update_fitler = (curr_filter) => {
+  filter.innerHTML = curr_filter;
+}
+
 const get_search_value = () => {
   let val = search_bar.value;
   val = val.toLowerCase();
-  return val; 
+  return val;
 };
 
+// const upd
+
+const set_filter = (target_filter) => {
+  curr_filter = target_filter;
+  check_which_url(curr_filter);
+  update_fitler(curr_filter);
+};
+
+const check_which_url = (curr_filter) => {
+  switch (curr_filter) {
+    case "pokemon":
+      set_url(pokemon_url);
+      break;
+    case "generations":
+      set_url(generations_url);
+      break;
+    case "types":
+      set_url(types_url);
+      break;
+  }
+};
+
+const set_url = (target_url) => {
+  url = target_url;
+};
+
+// TODO 
+// add code to check filter 
+// change show_results to show_pokemon
+// move it to its own class 
+// make a class for each filter 
+// call correct class on reponse of api
+// make loader 
 const search = async () => {
   reset_search();
   const search_request = get_search_value();
@@ -41,7 +90,7 @@ const check_enter = (event) => {
 };
 
 const call_api = async (search_val) => {
-  const response = await fetch(api_url + search_val);
+  const response = await fetch(url + search_val);
   if (response_is_valid(response.status)) {
     const result = await response.json();
     return result;
@@ -59,7 +108,7 @@ const response_is_valid = (status) => {
 };
 
 // update this to have custom err p tag below search bar
-// update custom err message to try something else instead 
+// update custom err message to try something else instead
 // fill search input with example search
 const invalid_call = () => {
   alert("invalid input");
@@ -117,7 +166,7 @@ const create_heading = (heading) => {
   title.innerHTML = heading;
   title.style.width = "100%";
   return title;
-}
+};
 
 const create_header = (name) => {
   const header = document.createElement("div");
@@ -153,7 +202,7 @@ const create_types = (types) => {
 const create_moves = (moves) => {
   const cont = document.createElement("div");
   cont.setAttribute("class", "move_container");
-  
+
   moves.forEach((item) => {
     const move = document.createElement("p");
     move.innerHTML = item.move.name;
@@ -180,4 +229,6 @@ const create_stats = (stats) => {
 
 const create_hr = () => {
   return document.createElement("hr");
-}
+};
+
+update_fitler(filters.pokemon);
