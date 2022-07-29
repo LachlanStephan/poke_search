@@ -17,8 +17,9 @@ let curr_filter = filters.pokemon;
 
 // functions
 const update_fitler = (curr_filter) => {
+  resest_search_bar();
   filter.innerHTML = curr_filter;
-}
+};
 
 const get_search_value = () => {
   let val = search_bar.value;
@@ -26,23 +27,22 @@ const get_search_value = () => {
   return val;
 };
 
-// const upd
-
 const set_filter = (target_filter) => {
   curr_filter = target_filter;
   check_which_url(curr_filter);
   update_fitler(curr_filter);
+  update_placeholder(curr_filter);
 };
 
 const check_which_url = (curr_filter) => {
   switch (curr_filter) {
-    case "pokemon":
+    case filters.pokemon:
       set_url(pokemon_url);
       break;
-    case "generations":
+    case filters.generations:
       set_url(generations_url);
       break;
-    case "types":
+    case filters.types:
       set_url(types_url);
       break;
   }
@@ -52,22 +52,43 @@ const set_url = (target_url) => {
   url = target_url;
 };
 
-// TODO 
-// add code to check filter 
-// change show_results to show_pokemon
-// move it to its own class 
-// make a class for each filter 
-// call correct class on reponse of api
-// make loader 
 const search = async () => {
   reset_search();
   const search_request = get_search_value();
   const data = await call_api(search_request);
   if (data) {
-    show_results(data);
+    check_which_filter(data);
   }
   if (!data) {
     invalid_call();
+  }
+};
+
+const check_which_filter = (data) => {
+  switch (curr_filter) {
+    case filters.pokemon:
+      show_results(data);
+      break;
+    case filters.generations:
+      create_generation_cards(data);
+      break;
+    case filters.types:
+      //
+      break;
+  }
+}
+
+const update_placeholder = (curr_filter) => {
+  switch (curr_filter) {
+    case filters.pokemon:
+      search_bar.setAttribute("placeholder", "E.g. Metagross");
+      break;
+    case filters.generations:
+      search_bar.setAttribute("placeholder", "E.g. 1");
+      break;
+    case filters.types:
+      search_bar.setAttribute("placeholder", "E.g. Fire");
+      break;
   }
 };
 
@@ -112,8 +133,12 @@ const response_is_valid = (status) => {
 // fill search input with example search
 const invalid_call = () => {
   alert("invalid input");
-  search_bar.value = "";
+  resest_search_bar();
 };
+
+const resest_search_bar = () => {
+  search_bar.value = "";
+}
 
 const show_results = (pokemon_data) => {
   const card = create_card(pokemon_data);
@@ -231,4 +256,14 @@ const create_hr = () => {
   return document.createElement("hr");
 };
 
+
+// Generations code 
+const create_generation_cards = (data) => {
+  console.log(data);
+  // create some header type data to go at top
+  // create some cards for all the pokemans in the region 
+}
+
+
 update_fitler(filters.pokemon);
+update_placeholder(filters.pokemon);
