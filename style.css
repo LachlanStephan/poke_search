@@ -4,6 +4,17 @@ html {
   background-position: center;
 }
 
+#loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  font-size: 22px;
+  font-weight: 900;
+  display: none;
+}
+
 body {
   height: auto;
   width: auto;
@@ -91,8 +102,6 @@ button {
 
 #card {
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
   width: 70%;
 }
@@ -133,4 +142,9 @@ button {
 .stats_container > span {
   text-transform: uppercase;
   font-weight: bold;
+}
+
+.gen_info {
+  font-weight: 300;
+  font-size: 18px;
 }

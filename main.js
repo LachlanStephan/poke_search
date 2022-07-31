@@ -1,3 +1,6 @@
+// TODO
+// refactor all pokemon filter related code to utilise the generic util funcs
+
 // global constants
 const search_bar = document.getElementById("search_bar");
 const pokemon_url = "https://pokeapi.co/api/v2/pokemon/";
@@ -6,6 +9,7 @@ const types_url = "https://pokeapi.co/api/v2/type/";
 let url = "";
 const main = document.getElementsByTagName("main")[0];
 const filter = document.getElementById("filter");
+const loader = document.getElementById("loader");
 
 // filters
 const filters = {
@@ -76,7 +80,7 @@ const check_which_filter = (data) => {
       //
       break;
   }
-}
+};
 
 const update_placeholder = (curr_filter) => {
   switch (curr_filter) {
@@ -111,6 +115,7 @@ const check_enter = (event) => {
 };
 
 const call_api = async (search_val) => {
+  show_loader();
   const response = await fetch(url + search_val);
   if (response_is_valid(response.status)) {
     const result = await response.json();
@@ -138,12 +143,13 @@ const invalid_call = () => {
 
 const resest_search_bar = () => {
   search_bar.value = "";
-}
+};
 
 const show_results = (pokemon_data) => {
   const card = create_card(pokemon_data);
 
   main.appendChild(card);
+  remove_loader();
   main.style.display = "flex";
 };
 
@@ -256,14 +262,116 @@ const create_hr = () => {
   return document.createElement("hr");
 };
 
-
-// Generations code 
+// Generations code
 const create_generation_cards = (data) => {
   console.log(data);
-  // create some header type data to go at top
-  // create some cards for all the pokemans in the region 
+
+  const card = create_element("section");
+  card.setAttribute("id", "card");
+
+  const header = create_gen_header(data);
+  const types = create_types_container(data.types);
+  const species = create_species(data.pokemon_species);
+  const moves = create_moves_no(data.moves);
+  const games = create_games(data.version_groups);
+
+  card.appendChild(header);
+  card.appendChild(types);
+  card.appendChild(species);
+  card.appendChild(moves);
+  card.appendChild(games);
+
+  main.appendChild(card);
+  remove_loader();
+  show_main();
+};
+
+const create_games = (version_groups) => {
+  const version_container = create_element("div");
+  const heading = create_element_with_text("h4", "Games");
+
+  version_container.appendChild(heading);
+  version_groups.forEach((game) => {
+    version_container.appendChild(create_element_with_text("p", game.name));
+  });
+  return version_container;
+};
+
+const create_moves_no = (moves) => {
+  const moves_no = moves.length;
+  const text = "Unique moves: " + moves_no;
+  const el = create_element_with_text("p", text);
+  add_class(el, "gen_info");
+  return el;
+};
+
+const create_species = (species) => {
+  console.log(species);
+  const species_no = species.length;
+  const text = "Unique species: " + species_no;
+  const el = create_element_with_text("p", text);
+  add_class(el, "gen_info");
+  return el;
+};
+
+const create_types_container = (typeData) => {
+  const number_types = create_element_with_text(
+    "p",
+    "Unique types: " + typeData.length
+  );
+  add_class(number_types, "gen_info");
+  return number_types;
+};
+
+const create_gen_header = (data) => {
+  const header = create_element("div");
+  header.appendChild(gen_region(data.main_region));
+  header.appendChild(gen_name(data.name));
+  return header;
+};
+
+const gen_region = (region) => {
+  return create_element_with_text("h2", region.name);
+};
+
+const gen_name = (name) => {
+  return create_element_with_text("h2", name);
+};
+
+// ################################
+// generic util funcs
+// ################################
+const create_element = (ele) => {
+  return document.createElement(ele);
+};
+
+const create_element_with_text = (ele, text) => {
+  const _ele = document.createElement(ele);
+  _ele.innerHTML = text;
+  return _ele;
+};
+
+const add_class = (ele, newClass) => {
+  return ele.classList.add(newClass);
+};
+
+const remove_class = (ele, oldClass) => {
+  return ele.classList.remove(oldClass);
+};
+
+const show_main = () => {
+  main.style.display = "block";
+};
+
+const show_loader = () => {
+  loader.style.display = "flex";
 }
 
+const remove_loader = () => {
+  loader.style.display = "none";
+}
 
+// funcs to be called on load
+set_url(pokemon_url);
 update_fitler(filters.pokemon);
 update_placeholder(filters.pokemon);
