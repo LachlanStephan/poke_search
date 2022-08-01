@@ -77,7 +77,7 @@ const check_which_filter = (data) => {
       create_generation_cards(data);
       break;
     case filters.types:
-      //
+      create_type_card(data);
       break;
   }
 };
@@ -145,6 +145,9 @@ const resest_search_bar = () => {
   search_bar.value = "";
 };
 
+// ################################
+// pokemon filter code
+// ################################
 const show_results = (pokemon_data) => {
   const card = create_card(pokemon_data);
 
@@ -262,10 +265,10 @@ const create_hr = () => {
   return document.createElement("hr");
 };
 
+// ################################
 // Generations code
+// ################################
 const create_generation_cards = (data) => {
-  console.log(data);
-
   const card = create_element("section");
   card.setAttribute("id", "card");
 
@@ -337,6 +340,69 @@ const gen_region = (region) => {
 const gen_name = (name) => {
   return create_element_with_text("h2", name);
 };
+
+// ################################
+// type filter code 
+// ################################
+
+const create_type_card = (data) => {
+  const card = create_element("section");
+  card.setAttribute("id", "card");
+  const move_class = create_move_class(data.move_damage_class);
+  const damages = create_damage_relations(data.damage_relations);
+  const moves = create_type_moves(data.moves);
+  // 
+  card.appendChild(move_class);
+  card.appendChild(damages);
+  card.appendChild(moves);
+  main.appendChild(card);
+  remove_loader();
+  show_main();
+}
+
+const create_move_class = (dataClass) => {
+  const el = create_element_with_text("h4", "class: " + dataClass.name);
+  add_class(el, "capital");
+  return el;
+}
+
+const create_damage_relations = (damage_relations) => {
+  const relations_container = create_element("div");
+  const damage_from = create_double_damgage_container(damage_relations.double_damage_from, "from");
+  const damage_to = create_double_damgage_container(damage_relations.double_damage_to, "to");
+
+  relations_container.appendChild(damage_from);
+  relations_container.appendChild(damage_to);
+  return relations_container;
+}
+
+const create_double_damgage_container = (from, direction) => {
+  const cont = create_element("div");
+  const heading = create_element_with_text("h4", "Double damage " + direction);
+  const list = create_element("div");
+  from.forEach((type) => {
+    const p = create_element_with_text("p", type.name);
+    add_class(p, "capital");
+    list.appendChild(p);
+  });
+  cont.appendChild(heading);
+  cont.appendChild(list);
+  return cont;
+}
+
+const create_type_moves = (moves) => {
+  const cont = create_element("div");
+  add_class(cont, "type_moves_container");
+  const heading = create_element_with_text("h4", "Moves");
+  cont.appendChild(heading);
+  
+  moves.forEach((move) => {
+    const p = create_element_with_text("p", move.name);
+    add_class(p, "capital");
+    cont.appendChild(p);
+  });
+  return cont;
+}
 
 // ################################
 // generic util funcs

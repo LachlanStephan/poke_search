@@ -115,12 +115,20 @@ button {
   flex-wrap: wrap;
 }
 
-.move_container {
+.move_container, 
+.type_moves_container {
   width: 100%;
   display: flex;
   flex-direction: column;
-  height: 15rem;
   overflow: auto;
+}
+
+.move_container {
+  height: 15rem;
+}
+
+.type_moves_container {
+  height: 20rem;
 }
 
 .stats_container {
@@ -144,7 +152,13 @@ button {
   font-weight: bold;
 }
 
-.gen_info {
+.gen_info,
+.type_info {
+  text-transform: capitalize;
   font-weight: 300;
   font-size: 18px;
+}
+
+.capital {
+  text-transform: capitalize;
 }
